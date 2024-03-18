@@ -1,7 +1,9 @@
 myconfig.h
+myconfig2.h
 .pioenvs
 .piolibdeps
 .clang_complete
 .gcc-flags.json
 .pio
 .vscode
+/logs
