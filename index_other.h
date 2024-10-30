@@ -208,7 +208,6 @@ const uint8_t index_simple_html[] = R"=====(<!doctype html>
         hide(waitSettings);
         show(settings);
         show(streamButton);
-        startStream();
       })
 
     // Put some helpful text on the 'Still' button

@@ -27,6 +27,9 @@
 #include "src/favicons.h"
 #include "src/logo.h"
 #include "storage.h"
+#include "src/httpd_basic_auth.h"
+#include "myconfig2.h"
+
 
 // Functions from the main .ino
 extern void flashLED(int flashtime);
@@ -674,6 +677,19 @@ static esp_err_t index_handler(httpd_req_t *req){
     char*  buf;
     size_t buf_len;
     char view[32] = {0,};
+
+    if ( HTTP_BASIC_AUTH == true )
+    {
+
+        if(httpd_basic_auth(req, "admin", "test") != ESP_OK) {
+        
+            httpd_basic_auth_resp_send_401(req);
+            httpd_resp_sendstr(req, "Not Authorized");
+            return ESP_FAIL;
+        }
+    }
+    
+
 
     flashLED(75);
     // See if we have a specific target (full/simple/portal) and serve as appropriate
