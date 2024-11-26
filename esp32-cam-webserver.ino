@@ -76,7 +76,7 @@ extern esp_err_t SendPictureHttp();
 unsigned long previousMillis;
 
 // Every 5 Minutes
-const unsigned long interval = (5 * 1000);
+const unsigned long interval = (5 * 60 * 1000);
 
 // Names for the Camera. (set these in myconfig.h)
 #if defined(CAM_NAME)
