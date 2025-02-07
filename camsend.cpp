@@ -2,6 +2,7 @@
 #include "cert.h"
 #include "myconfig2.h"
 #include <esp_camera.h>
+#include <ArduinoJson.h>
 
 
 // Functions from the main .ino
@@ -11,6 +12,44 @@ extern void setLamp(int newVal);
 extern int lampVal;
 extern bool autoLamp;
 extern bool debugData;
+extern char mdnsName;
+
+
+String serverurl = CAMSERVER;
+
+
+/*
+   send status
+
+*/
+esp_err_t SendStatusHttp()
+{
+    HTTPClient http;
+
+    JsonDocument doc;
+
+    doc["esphostname"] = String(mdnsName);
+    doc["rssi"] = String(WiFi.RSSI());
+   
+    // Serialize JSON document
+    String json;
+    serializeJson(doc, json);
+        
+    http.begin( serverurl + "/espstatus/", root_ca); // Specify the URL and certificate
+    http.addHeader("Content-Type", "application/json");
+
+    int httpCode = http.POST(json);
+
+    http.end();
+
+    if(httpCode > 0)
+    {
+        Serial.println(httpCode);        
+        return ESP_OK;
+    }
+    return ESP_FAIL;
+
+}
 
 /*
 
@@ -50,7 +89,7 @@ esp_err_t SendPictureHttp()
         fb_len = fb->len;
         HTTPClient http;
         
-        http.begin(CAMSERVER, root_ca); // Specify the URL and certificate
+        http.begin(serverurl + "/muccam/", root_ca); // Specify the URL and certificate
         http.addHeader("Content-Type", "image/jpeg");
         http.addHeader("Content-Length", String(fb_len));
         http.addHeader("Filename", PICTURE);

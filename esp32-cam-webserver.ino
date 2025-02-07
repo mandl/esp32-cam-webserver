@@ -8,6 +8,8 @@
 #include "src/parsebytes.h"
 #include "time.h"
 #include <ESPmDNS.h>
+#include "soc/soc.h"
+#include "soc/rtc_cntl_reg.h"
 
 
 SET_LOOP_TASK_STACK_SIZE(12*1024);
@@ -75,8 +77,8 @@ extern esp_err_t SendPictureHttp();
 
 unsigned long previousMillis;
 
-// Every 5 Minutes
-const unsigned long interval = (5 * 60 * 1000);
+// Every 1 Minutes
+const unsigned long interval = (1 * 60 * 1000);
 
 // Names for the Camera. (set these in myconfig.h)
 #if defined(CAM_NAME)
@@ -391,8 +393,12 @@ void StartCamera()
         // Start a 60 second watchdog timer
         esp_task_wdt_init(60, true);
         esp_task_wdt_add(NULL);
-        //delay(60 * 1000);
-        //ESP.restart();
+        while (1)
+        {
+            flashLED(1500);
+            delay(1500);
+        }
+        
     }
     else
     {
@@ -711,6 +717,8 @@ void setup()
     Serial.println(baseVersion);
     Serial.println();
 
+    // WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
+
     // Warn if no PSRAM is detected (typically user error with board selection in the IDE)
     if (!psramFound())
     {
@@ -734,7 +742,7 @@ void setup()
 
 #if defined(LED_PIN) // If we have a notification LED, set it to output
     pinMode(LED_PIN, OUTPUT);
-    digitalWrite(LED_PIN, LED_ON);
+    digitalWrite(LED_PIN, LED_OFF);
 #endif
 
     // Start the SPIFFS filesystem before we initialise the camera
