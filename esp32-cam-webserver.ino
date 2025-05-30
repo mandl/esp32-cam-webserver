@@ -962,6 +962,7 @@ void loop()
                     previousMillis = start;
 
                     // send picture
+                    Serial.println("SendPictureHttp");
                     if(SendPictureHttp()!= ESP_OK)
                     {
                         //delay(1000);
