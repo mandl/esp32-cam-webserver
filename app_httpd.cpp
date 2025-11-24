@@ -48,6 +48,7 @@ extern bool accesspoint;
 extern char apName[];
 extern bool captivePortal;
 extern int httpPort;
+extern char mdnsName[];
 extern int streamPort;
 extern char httpURL[];
 extern char streamURL[];
@@ -701,6 +702,7 @@ static esp_err_t dump_handler(httpd_req_t *req)
     // Module
     d += sprintf(d, "Name: %s<br>\n", myName);
     d += sprintf(d, "Firmware: %s (base: %s)<br>\n", myVer, baseVersion);
+    d += sprintf(d, "Picture Name: %s<br>\n", PICTURE);
     float sketchPct = 100 * sketchSize / sketchSpace;
     d += sprintf(d, "Sketch Size: %i (total: %i, %.1f%% used)<br>\n", sketchSize, sketchSpace, sketchPct);
     d += sprintf(d, "MD5: %s<br>\n", sketchMD5.c_str());
@@ -728,6 +730,7 @@ static esp_err_t dump_handler(httpd_req_t *req)
         String bssid = WiFi.BSSIDstr();
         d += sprintf(d, "BSSID: %s<br>\n", bssid.c_str());
     }
+    d += sprintf(d, "mDNS: %s<br>\n", mdnsName);
     d += sprintf(d, "IP address: %d.%d.%d.%d<br>\n", ip[0], ip[1], ip[2], ip[3]);
     if (!accesspoint)
     {
