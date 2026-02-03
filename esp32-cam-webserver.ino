@@ -10,6 +10,7 @@
 #include <ESPmDNS.h>
 #include "soc/soc.h"
 #include "soc/rtc_cntl_reg.h"
+#include "myconfig2.h"
 
 
 SET_LOOP_TASK_STACK_SIZE(12*1024);

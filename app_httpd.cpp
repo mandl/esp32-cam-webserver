@@ -31,6 +31,9 @@
 #include "storage.h"
 #include "src/httpd_basic_auth.h"
 #include "myconfig2.h"
+#include "config.h"
+#include "myconfig2.h"
+
 
 // Functions from the main .ino
 extern void flashLED(int flashtime);
@@ -71,6 +74,7 @@ extern bool otaEnabled;
 extern char otaPassword[];
 extern unsigned long xclk;
 extern int sensorPID;
+
 
 typedef struct
 {
@@ -702,7 +706,10 @@ static esp_err_t dump_handler(httpd_req_t *req)
     // Module
     d += sprintf(d, "Name: %s<br>\n", myName);
     d += sprintf(d, "Firmware: %s (base: %s)<br>\n", myVer, baseVersion);
-    d += sprintf(d, "Picture Name: %s<br>\n", PICTURE);
+    if (PUSH_PICTURE == true)
+    {
+        d += sprintf(d, "Picture Name: %s<br>\n", PICTURE);
+    }
     float sketchPct = 100 * sketchSize / sketchSpace;
     d += sprintf(d, "Sketch Size: %i (total: %i, %.1f%% used)<br>\n", sketchSize, sketchSpace, sketchPct);
     d += sprintf(d, "MD5: %s<br>\n", sketchMD5.c_str());
