@@ -235,6 +235,7 @@ const uint8_t index_ov3660_html[] = R"=====(<!doctype html>
                   <option value="90">90&deg; (Right)</option>
                   <option value="0" selected="selected">0&deg; (None)</option>
                   <option value="-90">-90&deg; (Left)</option>
+                  <option value="-180">-90&deg; (Button)</option>
                 </select>
               </div>
               <div class="input-group" id="bpc-group">
@@ -507,7 +508,13 @@ const uint8_t index_ov3660_html[] = R"=====(<!doctype html>
         closeButton.classList.remove('close-rot-left');
         closeButton.classList.remove('close-rot-none');
         closeButton.classList.add('close-rot-right');
-      } else {
+      } else if (rot == -180) {
+        viewContainer.style.transform = `rotate(-180deg) translate(-100%, -100%)`;
+        closeButton.classList.remove('close-rot-left');
+        closeButton.classList.remove('close-rot-none');
+        closeButton.classList.add('close-rot-button');
+      } 
+      else {
         viewContainer.style.transform = `rotate(0deg)`;
         closeButton.classList.remove('close-rot-left');
         closeButton.classList.remove('close-rot-right');

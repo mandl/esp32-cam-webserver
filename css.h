@@ -334,6 +334,11 @@ select {
   bottom: 5px;
 }
 
+.close-rot-button {
+  left: 5px;
+  bottom: 5px;
+}
+
 .hidden {
   display: none
 }
